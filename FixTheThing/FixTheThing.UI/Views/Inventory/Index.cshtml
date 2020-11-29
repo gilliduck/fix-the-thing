@@ -1,0 +1,49 @@
+﻿@using Kendo.Mvc.UI
+@using FixTheThing.UI.ViewModels.Inventory
+@model System.Collections.Generic.List<FixTheThing.UI.ViewModels.Inventory.ItemVM>
+
+@{
+    ViewBag.Title = "Inventory";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid<ItemVM>()
+    .Name("InventoryGrid")
+    .Columns(column =>
+    {
+        column.Bound(c => c.Name);
+        column.Bound(c => c.InstalledOn);
+        column.Bound(c => c.SerialNumber);
+        column.Bound(c => c.Description);
+        column.Command(command => { command.Edit(); command.Destroy(); }).Width(172);
+    })
+    .ToolBar(toolbar => toolbar.Create())
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .DataSource(ds => ds
+        .Ajax()
+        .Model(m => m.Id(i => i.Id))
+        .Events(events => events.Error("error_handler"))
+        .Read(read => read.Action("GetInventory", "Inventory"))
+        .Create(create => create.Action("AddItem", "Inventory"))
+        .Destroy(destroy => destroy.Action("DeleteItem", "Inventory"))
+        .Update(update => update.Action("UpdateItem", "Inventory"))))
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function() {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>

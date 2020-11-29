@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FixTheThing.Database.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -12,6 +13,7 @@ using FixTheThing.UI.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace FixTheThing.UI
 {
@@ -29,11 +31,18 @@ namespace FixTheThing.UI
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
-					Configuration.GetConnectionString("DefaultConnection")));
+					Configuration.GetConnectionString("IdentityConnection")));
+			services.AddDbContext<FttDbContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("FTTConnection")));
+
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
-			services.AddControllersWithViews();
-			services.AddRazorPages();
+
+			services.AddControllersWithViews()
+				.AddJsonOptions(options =>
+					options.JsonSerializerOptions.PropertyNamingPolicy = null); ;
+			services.AddKendo();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

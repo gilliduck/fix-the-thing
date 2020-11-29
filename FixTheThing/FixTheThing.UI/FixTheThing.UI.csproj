@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-FixTheThing.UI-6FE35C4E-590D-45A7-B90F-CEE4F331E923</UserSecretsId>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2020.1.114" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FixTheThing.Database\FixTheThing.Database.csproj" />
   </ItemGroup>
 
 </Project>
